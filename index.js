@@ -26,7 +26,7 @@ function getSelectedChampion(selectedChampion) {
             found = true;
             console.log(champ);
             document.getElementById("myH1").textContent = (`You picked ${selectedChampion}!`);
-            document.getElementById("h1Container").style.backdropFilter = "sepia(90%)";
+            //document.getElementById("h1Container").style.backdropFilter = "sepia(90%)";
             document.getElementById("myH1").style.color = "white";
             let nameTemp = document.getElementById("name");
             document.getElementById("champPick").style.color = "white";

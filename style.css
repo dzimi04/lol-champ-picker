@@ -1,0 +1,93 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-image: url("misc/default.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    min-width: 100%;
+    margin: 0px;
+}
+h1 {
+    font-size: 3em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    color: hsla(0, 0%, 0%, 0.8);
+    margin: 0px;
+    margin-top: 5px;
+    text-shadow: 1px 1px 1px black;
+}
+input {
+    font-size: 2em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: hsla(0, 0%, 0%, 0.5);
+    border-top: 3px;
+    border-left: 3px;
+    border-color: hsla(0, 0%, 0%, 0.5);
+    border-radius: 10px;
+    padding: 0px 10px;
+}
+#champPick {
+    font-size: 2em;
+    padding: 10px 15px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border-radius: 10px;
+    background-color: hsla(0, 0%, 0%, 0.1);
+    text-shadow: 1px 1px;
+    border: none;
+}
+#name {
+    font-size: 2em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    margin: 0px;
+    margin-top: 5px;
+    display: none;
+    padding: 5px 1px;
+    text-shadow: 1px 1px 1px black
+}
+#title {
+    font-size: 1.75em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 510;
+    margin: 0px;
+    margin-top: 5px;
+    display: none;
+    text-shadow: 1px 1px 1px black
+}
+#blurb {
+    font-size: 1.5em;
+    font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 450;
+    margin: 0px;
+    margin-top: 5px;
+    display: none;
+    text-indent: 5px;
+    padding: 5px 15px;
+    text-align: center;
+    font-style: oblique;
+    text-shadow: 1px 1px 1px black
+}
+#blurbContainer {
+    backdrop-filter: sepia(90%) ;
+    display: inline-block;
+    margin: 10px 20px;
+    border-radius: 20px;
+    max-width: 80%;
+}
+#nameContainer, #titleContainer {
+    backdrop-filter: sepia(90%) ;
+    display: block;
+    margin: 10px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-radius: 10px;
+}
+#h1Container {
+    border-radius: 12px;
+}

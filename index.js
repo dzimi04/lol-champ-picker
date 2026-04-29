@@ -1,6 +1,12 @@
 let allChampionsObj;
+let currentChampionObj;
 let championsArray;
 let currentChampionInputed;
+let validSkinNumbers = [];
+let currentSkinNum = 0;
+let currentChampionId;
+
+let numberOfSkins = 1;
 
 fetch("https://ddragon.leagueoflegends.com/cdn/16.8.1/data/en_US/champion.json")
 .then(response => {
@@ -19,10 +25,35 @@ fetch("https://ddragon.leagueoflegends.com/cdn/16.8.1/data/en_US/champion.json")
     console.error("Greska, error");
 });
 
-function getSelectedChampion(selectedChampion) {
+async function getSelectedChampion(selectedChampion) {
     let found = false;
-    championsArray.forEach(champ => {
+    for (const champ of championsArray) {
+        //
         if (champ.name == `${selectedChampion}`) {
+            fetch(`https://ddragon.leagueoflegends.com/cdn/16.8.1/data/en_US/champion/${champ.id}.json`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Doslo je do greske");
+                } 
+                return response.json();
+            })
+            .then(data => {
+                validSkinNumbers.length = 0;
+                currentChampionObj = data;
+                //console.log(allChampionsObj);
+                let tempArray = Object.values(currentChampionObj.data);
+                for (const skin of tempArray[0].skins) {
+                    if (skin.parentSkin == undefined) {
+                        validSkinNumbers.push(skin.num);
+                    }
+                }
+                currentChampionId = champ.id;
+                
+            //ovde se pravi novi array tj puni sa validnim brojevima skinova za trenutnog championa
+                //
+            }).catch(error => {
+                console.error("Greska, error");
+            });
             found = true;
             console.log(champ);
             document.getElementById("myH1").textContent = (`You picked ${selectedChampion}!`);
@@ -45,8 +76,11 @@ function getSelectedChampion(selectedChampion) {
             blurbTemp.style.color = "white";
             let bodyTemp = document.body;
             bodyTemp.style.backgroundImage = `url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champ.id}_0.jpg")`;
+            currentSkinNum = 0;
+            document.getElementById("prevSkin").style.visibility = "visible";
+            document.getElementById("nextSkin").style.visibility = "visible";
         }
-    });
+    }
     if (!found) {
         document.getElementById("myH1").textContent = "That champion doesn't exist!";
         document.getElementById("myH1").style.color = "red";
@@ -54,6 +88,8 @@ function getSelectedChampion(selectedChampion) {
         document.getElementById("title").style.display = "none";
         document.getElementById("blurb").style.display = "none";
         document.body.style.backgroundImage = `url("misc/death.png")`;
+        document.getElementById("prevSkin").style.visibility = "hidden";
+        document.getElementById("nextSkin").style.visibility = "hidden";
     }
 }
 
@@ -97,8 +133,41 @@ function prepareText() {
     }
     console.log(currentChampion);
     getSelectedChampion(currentChampion);
-    //za slike se gleda Bel'Veth->Belveth, tj id a ne name
 }
 
+window.addEventListener('load', () => {
+    if (window.innerWidth <= 768) {
+        const center = (document.documentElement.scrollWidth - window.innerWidth) / 2;
+        window.scrollTo(center, 0);
+    }
+});
 
+function getPrevSkin() {
+    let tempIndex = validSkinNumbers.indexOf(currentSkinNum);
+    console.log(validSkinNumbers);
+    console.log(tempIndex);
+    if (tempIndex == 0) {
+        currentSkinNum = validSkinNumbers[validSkinNumbers.length - 1];
+    } else {
+        currentSkinNum = validSkinNumbers[--tempIndex];
+    }
+    console.log(currentSkinNum);
+    setBackground();
+}
 
+function getNextSkin() {
+    let tempIndex = validSkinNumbers.indexOf(currentSkinNum);
+    console.log(validSkinNumbers);
+    console.log(tempIndex);
+    if (tempIndex == validSkinNumbers.length - 1) {
+        currentSkinNum = validSkinNumbers[0];
+    } else {
+        currentSkinNum = validSkinNumbers[++tempIndex];
+    }
+    console.log(currentSkinNum);
+    setBackground();
+}
+
+function setBackground() {
+    document.body.style.backgroundImage = `url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${currentChampionId}_${currentSkinNum}.jpg")`;
+}

@@ -16,11 +16,8 @@ fetch("https://ddragon.leagueoflegends.com/cdn/16.8.1/data/en_US/champion.json")
     return response.json();
 })
 .then(data => {
-    //console.log(data);
     allChampionsObj = data;
-    //console.log(allChampionsObj);
     championsArray = Object.values(allChampionsObj.data);
-    console.log(championsArray);
 }).catch(error => {
     console.error("Greska, error");
 });
@@ -35,12 +32,12 @@ async function getSelectedChampion(selectedChampion) {
                 if (!response.ok) {
                     throw new Error("Doslo je do greske");
                 } 
+                document.body.style.backgroundImage = `url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champ.id}_0.jpg")`;
                 return response.json();
             })
             .then(data => {
                 validSkinNumbers.length = 0;
                 currentChampionObj = data;
-                //console.log(allChampionsObj);
                 let tempArray = Object.values(currentChampionObj.data);
                 for (const skin of tempArray[0].skins) {
                     if (skin.parentSkin == undefined) {
@@ -48,16 +45,15 @@ async function getSelectedChampion(selectedChampion) {
                     }
                 }
                 currentChampionId = champ.id;
+                currentSkinNum = 0;
                 
-            //ovde se pravi novi array tj puni sa validnim brojevima skinova za trenutnog championa
-                //
+                setBackground();
+                
             }).catch(error => {
                 console.error("Greska, error");
             });
             found = true;
-            console.log(champ);
             document.getElementById("myH1").textContent = (`You picked ${selectedChampion}!`);
-            //document.getElementById("h1Container").style.backdropFilter = "sepia(90%)";
             document.getElementById("myH1").style.color = "white";
             let nameTemp = document.getElementById("name");
             document.getElementById("champPick").style.color = "white";
@@ -65,7 +61,6 @@ async function getSelectedChampion(selectedChampion) {
             nameTemp.textContent = champ.name;
             nameTemp.style.display = "block";
             nameTemp.style.color = "white";
-            //postaviti blur, stilizovati tekst i slicno
             let titleTemp = document.getElementById("title");
             titleTemp.textContent = champ.title.charAt(0).toUpperCase() + champ.title.slice(1);;
             titleTemp.style.display = "block";
@@ -74,11 +69,9 @@ async function getSelectedChampion(selectedChampion) {
             blurbTemp.textContent = champ.blurb;
             blurbTemp.style.display = "block";
             blurbTemp.style.color = "white";
-            let bodyTemp = document.body;
-            bodyTemp.style.backgroundImage = `url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champ.id}_0.jpg")`;
-            currentSkinNum = 0;
             document.getElementById("prevSkin").style.visibility = "visible";
             document.getElementById("nextSkin").style.visibility = "visible";
+            
         }
     }
     if (!found) {
@@ -131,7 +124,6 @@ function prepareText() {
         default:
             break;
     }
-    console.log(currentChampion);
     getSelectedChampion(currentChampion);
 }
 
@@ -144,30 +136,25 @@ window.addEventListener('load', () => {
 
 function getPrevSkin() {
     let tempIndex = validSkinNumbers.indexOf(currentSkinNum);
-    console.log(validSkinNumbers);
-    console.log(tempIndex);
-    if (tempIndex == 0) {
-        currentSkinNum = validSkinNumbers[validSkinNumbers.length - 1];
-    } else {
-        currentSkinNum = validSkinNumbers[--tempIndex];
-    }
-    console.log(currentSkinNum);
+    tempIndex = (tempIndex + validSkinNumbers.length - 1) % validSkinNumbers.length;
+    currentSkinNum = validSkinNumbers[tempIndex];
     setBackground();
 }
 
 function getNextSkin() {
     let tempIndex = validSkinNumbers.indexOf(currentSkinNum);
-    console.log(validSkinNumbers);
-    console.log(tempIndex);
-    if (tempIndex == validSkinNumbers.length - 1) {
-        currentSkinNum = validSkinNumbers[0];
-    } else {
-        currentSkinNum = validSkinNumbers[++tempIndex];
-    }
-    console.log(currentSkinNum);
+    tempIndex = (tempIndex + 1) % validSkinNumbers.length;
+    currentSkinNum = validSkinNumbers[tempIndex];
     setBackground();
 }
 
 function setBackground() {
     document.body.style.backgroundImage = `url("https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${currentChampionId}_${currentSkinNum}.jpg")`;
+    let temp = validSkinNumbers.indexOf(currentSkinNum);
+    const prevImg = new Image();
+    const nextImg = new Image();
+    let nextIndex = (temp + 1) % validSkinNumbers.length;
+    let prevIndex = (temp - 1 + validSkinNumbers.length) % validSkinNumbers.length;
+    prevImg.src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${currentChampionId}_${validSkinNumbers[prevIndex]}.jpg`;
+    nextImg.src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${currentChampionId}_${validSkinNumbers[nextIndex]}.jpg`;
 }

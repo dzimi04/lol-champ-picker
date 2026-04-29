@@ -155,24 +155,20 @@ input {
 @media (max-width: 768px) {
     body {
         display: flex;
-        flex-direction: row; /* Elementi idu jedan pored drugog */
-        justify-content: flex-start; /* Da krene od početka sadržaja */
-        overflow-x: auto; /* Dozvoljen skrol prstom */
-        -webkit-overflow-scrolling: touch; /* Glatki skrol na iPhoneu */
+        flex-direction: row;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
         padding-top: 30px;
     }
-
-    /* Pazi na veliko C u imenu ID-a! */
     #bodyContainer {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        min-width: 200dvw; /* Dva ekrana širine za skrolanje */
+        min-width: 200dvw;
         height: 100%;
     }
-
-    /* Ako koristiš section tagove unutra */
     section {
         min-width: 100vw; 
         height: 100vh;
